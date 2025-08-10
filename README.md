@@ -23,7 +23,7 @@ This project is a dynamic form builder built with React and TypeScript, utilizin
 1. Clone the repository:
 
    ```
-   git clone <https://github.com/lightyagami/formbuilder.git>
+   git clone https://github.com/lightyagami/formbuilder.git
    ```
 
 2. Navigate to the project directory:

@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateField } from '../store/slices/formSlice';
-import { TextField, FormControlLabel, Checkbox, Select, MenuItem, FormControl, InputLabel, Chip, Box, Button } from '@mui/material';
+import {
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Chip,
+  Box,
+  Button,
+} from '@mui/material';
 import { Field, ValidationRule } from '../types';
 import DerivedFieldConfig from './DerivedFieldConfig';
 
@@ -34,7 +45,17 @@ const FieldConfig: React.FC<FieldConfigProps> = ({ field }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 2, bgcolor: 'background.paper', borderRadius: '8px', flex: 1 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        p: 2,
+        bgcolor: 'background.paper',
+        borderRadius: '8px',
+        flex: 1,
+      }}
+    >
       <TextField
         label="Label"
         value={field.label}
@@ -44,10 +65,89 @@ const FieldConfig: React.FC<FieldConfigProps> = ({ field }) => {
         margin="normal"
         variant="outlined"
       />
+
       <FormControlLabel
-        control={<Checkbox checked={field.required} onChange={(e) => handleChange({ required: e.target.checked })} color="primary" />}
+        control={
+          <Checkbox
+            checked={field.required}
+            onChange={(e) => handleChange({ required: e.target.checked })}
+            color="primary"
+          />
+        }
         label="Required"
       />
+      
+      {(() => {
+        switch (field.type) {
+          case 'checkbox':
+            return (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={!!field.defaultValue}
+                    onChange={(e) => handleChange({ defaultValue: e.target.checked })}
+                    color="primary"
+                  />
+                }
+                label="Default Checked"
+              />
+            );
+          case 'select':
+          case 'radio':
+            return (
+              <FormControl size="small" fullWidth margin="normal">
+                <InputLabel>Default Value</InputLabel>
+                <Select
+                  value={field.defaultValue || ''}
+                  onChange={(e) => handleChange({ defaultValue: e.target.value })}
+                >
+                  {(field.options || []).map((opt, idx) => (
+                    <MenuItem key={idx} value={opt}>
+                      {opt}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            );
+          case 'date':
+            return (
+              <TextField
+                label="Default Value"
+                type="date"
+                value={field.defaultValue || ''}
+                onChange={(e) => handleChange({ defaultValue: e.target.value })}
+                size="small"
+                fullWidth
+                margin="normal"
+                InputLabelProps={{ shrink: true }}
+              />
+            );
+          case 'number':
+            return (
+              <TextField
+                label="Default Value"
+                type="number"
+                value={field.defaultValue || ''}
+                onChange={(e) => handleChange({ defaultValue: e.target.value })}
+                size="small"
+                fullWidth
+                margin="normal"
+              />
+            );
+          default:
+            return (
+              <TextField
+                label="Default Value"
+                value={field.defaultValue || ''}
+                onChange={(e) => handleChange({ defaultValue: e.target.value })}
+                size="small"
+                fullWidth
+                margin="normal"
+              />
+            );
+        }
+      })()}
+
       <FormControl size="small" fullWidth margin="normal">
         <InputLabel>Field Type</InputLabel>
         <Select
@@ -64,17 +164,23 @@ const FieldConfig: React.FC<FieldConfigProps> = ({ field }) => {
           <MenuItem value="date">Date</MenuItem>
         </Select>
       </FormControl>
+
       {(field.type === 'select' || field.type === 'radio') && (
         <TextField
           label="Options (comma-separated)"
           value={field.options?.join(',') || ''}
-          onChange={(e) => handleChange({ options: e.target.value.split(',').map((opt) => opt.trim()) })}
+          onChange={(e) =>
+            handleChange({
+              options: e.target.value.split(',').map((opt) => opt.trim()),
+            })
+          }
           size="small"
           fullWidth
           margin="normal"
           variant="outlined"
         />
       )}
+
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Validation</InputLabel>
@@ -120,6 +226,7 @@ const FieldConfig: React.FC<FieldConfigProps> = ({ field }) => {
           Add
         </Button>
       </Box>
+
       <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         {field.validations.map((val, index) => (
           <Chip
@@ -136,6 +243,7 @@ const FieldConfig: React.FC<FieldConfigProps> = ({ field }) => {
           />
         ))}
       </Box>
+
       <FormControlLabel
         control={
           <Checkbox
