@@ -43,7 +43,7 @@ This project is a dynamic form builder built with React and TypeScript, utilizin
 To start the development server, run:
 
 ```
-npm start
+npm run-script start
 ```
 
 The application will be available at `http://localhost:3000`.
