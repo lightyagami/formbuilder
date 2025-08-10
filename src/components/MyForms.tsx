@@ -1,12 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
-import { loadForm } from '../store/slices/formSlice';
+import { loadForm, deleteForm } from '../store/slices/formSlice';
 import { FormSchema } from '../types';
 import { Box, Typography, Button, Card, CardContent, CardActions } from '@mui/material';
 import { GridLegacy as Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const MyForms = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,12 @@ const MyForms = () => {
   const handleLoadForm = (formId: string) => {
     dispatch(loadForm(formId));
     navigate('/preview');
+  };
+
+  const handleDeleteForm = (formId: string) => {
+    if (window.confirm('Are you sure you want to delete this form?')) {
+      dispatch(deleteForm(formId));
+    }
   };
 
   return (
@@ -60,13 +67,21 @@ const MyForms = () => {
                     Fields: {form.fields.length}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: 'space-between' }}>
                   <Button
                     size="small"
                     color="primary"
                     onClick={() => handleLoadForm(form.id)}
                   >
                     Preview
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteForm(form.id)}
+                  >
+                    Delete
                   </Button>
                 </CardActions>
               </Card>

@@ -49,7 +49,10 @@ const formSlice = createSlice({
     saveForm: (state, action: PayloadAction<string>) => {
       if (state.currentForm) {
         state.currentForm.name = action.payload;
-        state.forms = [...state.forms.filter((f) => f.id !== state.currentForm!.id), state.currentForm];
+        state.forms = [
+          ...state.forms.filter((f) => f.id !== state.currentForm!.id),
+          state.currentForm,
+        ];
         localStorage.setItem('forms', JSON.stringify(state.forms));
         state.currentForm = null;
       }
@@ -57,8 +60,24 @@ const formSlice = createSlice({
     loadForm: (state, action: PayloadAction<string>) => {
       state.currentForm = state.forms.find((f) => f.id === action.payload) || null;
     },
+    deleteForm: (state, action: PayloadAction<string>) => {
+      state.forms = state.forms.filter((f) => f.id !== action.payload);
+      localStorage.setItem('forms', JSON.stringify(state.forms));
+      if (state.currentForm?.id === action.payload) {
+        state.currentForm = null;
+      }
+    },
   },
 });
 
-export const { addField, updateField, updateForm, deleteField, saveForm, loadForm } = formSlice.actions;
+export const {
+  addField,
+  updateField,
+  updateForm,
+  deleteField,
+  saveForm,
+  loadForm,
+  deleteForm,
+} = formSlice.actions;
+
 export default formSlice.reducer;
