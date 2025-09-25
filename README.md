@@ -67,10 +67,6 @@ Once the application is running, you can:
 - Edit fields to customize labels and validation rules.
 - Save your forms, which will be stored in localStorage for future access.
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
-
 ## License
 
 This project is licensed under the MIT License.
